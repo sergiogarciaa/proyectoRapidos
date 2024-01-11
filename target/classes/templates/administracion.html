@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Panel de Administración</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.2/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" href="../static/css/estilo.css" th:href="@{/css/estilo.css}">
+	<link rel="stylesheet" href="../static/css/menu.css" th:href="@{/css/menu.css}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script th:src="@{/script/script.js}"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body >
+<nav>
+		<div class="menu">
+			<div class="logo">
+				<a>Administración</a>
+			</div>
+			<ul class="nav-links">
+				<li>
+					<a th:href="@{/privada/home}">Volver</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<h3 th:if="${isAdmin}" class="text-dark text-center mt-5">Administracion</h3>
+	
+	   <h4 th:if="${isAdmin}" style="text-align: center; margin-top: 50px;">Lista de Usuarios</h4>
+
+    <table th:if="${isAdmin}" style="text-align: center;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Cambiar Rol</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Itera sobre la lista de usuarios y muestra la información -->
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.nombreUsuario}"></td>
+                <td th:text="${usuario.apellidosUsuario}"></td>
+			<!-- botón de cambio de rol -->
+				<td>
+					<form th:if="${isAdmin}" method="post" th:action="@{/privada/administracion/cambiarRol}">
+			            <input type="hidden" name="emailUsuario" th:value="${usuario.emailUsuario}" />
+			            <button type="submit" th:text="${usuario.isAdmin() ? 'Quitar Rol' : 'Asignar Rol'}"></button>
+			        </form>        	 
+				</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+	
+	<h3 th:unless="${isAdmin}" class="text-dark text-center mt-5">No eres administrador</h3>
+</body>
+</html>
